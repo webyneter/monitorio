@@ -24,7 +24,6 @@ services:
     - ./docker/grafana/config.monitoring
     ports:
     - 3000:3000
-#    user: "104"
 
   prometheus:
     build: ./docker/prometheus/
