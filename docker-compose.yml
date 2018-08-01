@@ -46,8 +46,8 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
 
   cadvisor:
-    container_name: cadvisor
     build: ./docker/cadvisor/
+    container_name: cadvisor
     restart: always
     networks:
     - backend
@@ -58,8 +58,8 @@ services:
     - /var/lib/docker/:/var/lib/docker:ro
 
   node-exporter:
-    container_name: node-exporter
     build: ./docker/node-exporter/
+    container_name: node-exporter
     restart: always
     networks:
       - backend
@@ -74,8 +74,8 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
 
   alertmanager:
-    container_name: alertmanager
     build: ./docker/alertmanager/
+    container_name: alertmanager
     restart: always
     networks:
       - backend
