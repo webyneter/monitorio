@@ -1,104 +1,91 @@
-version: '3.1'
+version: '3.6'
 
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
+  grafana_data: {}
+  prometheus_data: {}
 
 networks:
-  front-tier:
-  back-tier:
+  frontend:
+  backend:
 
 services:
+  grafana:
+    build: ./docker/grafana/
+    restart: always
+    networks:
+    - backend
+    - frontend
+    depends_on:
+    - prometheus
+    volumes:
+    - grafana_data:/var/lib/grafana
+    - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+    - ./grafana/config.monitoring
+    ports:
+    - 3000:3000
+    user: "104"
 
   prometheus:
-    image: prom/prometheus:v2.1.0
+    build: ./docker/prometheus/
+    restart: always
+    depends_on:
+      - cadvisor
+    links:
+      - cadvisor:cadvisor
+      - alertmanager:alertmanager
+    networks:
+      - backend
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
-    depends_on:
-      - cadvisor
-    networks:
-      - back-tier
+
+  cadvisor:
+    build: ./docker/cadvisor/
     restart: always
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
+    networks:
+    - backend
+    volumes:
+    - /:/rootfs:ro
+    - /sys:/sys:ro
+    - /var/run:/var/run:rw
+    - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+    - 8080:8080
 
   node-exporter:
-    image: prom/node-exporter
+    build: ./docker/node-exporter/
+    restart: always
+    networks:
+      - backend
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
       - /:/rootfs:ro
-    command: 
-      - '--path.procfs=/host/proc' 
+      - /sys:/host/sys:ro
+      - /proc:/host/proc:ro
+    ports:
+      - 9100:9100
+    command:
+      - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    ports:
-      - 9100:9100
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      mode: global
 
   alertmanager:
-    image: prom/alertmanager
+    build: ./docker/alertmanager/
+    restart: always
+    networks:
+      - backend
+    volumes:
+    - ./alertmanager/:/etc/alertmanager/
     ports:
       - 9093:9093
-    volumes:
-      - ./alertmanager/:/etc/alertmanager/
-    networks:
-      - back-tier
-    restart: always
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
-  cadvisor:
-    image: google/cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - 8080:8080
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      mode: global
-
-  grafana:
-    image: grafana/grafana
-    user: "104"
-    depends_on:
-      - prometheus
-    ports:
-      - 3000:3000
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    env_file:
-      - ./grafana/config.monitoring
-    networks:
-      - back-tier
-      - front-tier
-    restart: always
-
