@@ -1,0 +1,24 @@
+---
+
+local_root_dir_path: ".."
+
+project_name: "monitorio"
+root_dir_path: "~/apps"
+project_dir_path: "{{ root_dir_path }}/{{ project_name }}"
+commit_sha_dir_path: "{{ project_dir_path }}/{{ commit_sha }}"
+working_dir: "{{ commit_sha_dir_path }}"
+
+config_dir_name: "config"
+files_config_dir_path: "files/{{ config_dir_name }}"
+template_config_dir_path: "templates/{{ config_dir_name }}"
+config_dir_path: "{{ root_dir_path }}/{{ config_dir_name }}"
+
+docker_compose:
+  CONFIG_DIR_NAME: "{{ config_dir_name }}"
+  REGISTRY_FULL_PATH: "{{ registry_full_path }}"
+  IMAGE_TAG: "{{ commit_sha }}"
+
+prometheus:
+  scrape_interval: "10s"
+  scrape_timeout: "10s"
+  evaluation_interval: "10s"
