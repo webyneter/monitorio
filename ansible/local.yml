@@ -3,28 +3,7 @@
 - hosts: monitorio
 
   tasks:
-  - name: "Initialize configuration at {{ config_dir_path }}"
-    block:
-    - name: "Create {{ config_dir_path }} with subdirectories from {{ template_config_dir_path }}"
-      file:
-        path: "{{ config_dir_path }}/{{ item.path }}"
-        state: directory
-      with_filetree: "{{ template_config_dir_path }}"
-      when: item.state == "directory"
-
-    - name: "Copy configs from {{ template_config_dir_path }} recursively"
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ config_dir_path }}/{{ item.path }}"
-      with_filetree: "{{ template_config_dir_path }}"
-      when: item.state == "file"
-
-    - name: "Copy the remaining configs from {{ files_config_dir_path }} recursively"
-      copy:
-        src: "{{ item.src }}"
-        dest: "{{ config_dir_path }}/{{ item.path }}"
-      with_filetree: "{{ files_config_dir_path }}"
-      when: item.state == "file"
+  - import_tasks: tasks/common.yml
 
   - name: Build images
     environment: "{{ docker_compose }}"
@@ -35,7 +14,7 @@
       --file "{{ local_root_dir_path }}/local.yml"
       build
 
-  - name: Run stack
+  - name: Re/start stack
     environment: "{{ docker_compose }}"
     command: >
       docker-compose
@@ -44,3 +23,4 @@
       --file "{{ local_root_dir_path }}/local.yml"
       up
       --detach
+      --force-recreate

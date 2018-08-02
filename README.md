@@ -22,12 +22,24 @@ ansible-playbook --inventory ./ansible/environments/local/ ./ansible/local.yml
 
 #### Staging
 
-```bash
+You should never do that.
 
-```
 
 #### Production
 
-```bash
+You should never do that.
 
+
+## Tips & Tricks
+
+### Ansible
+
+```bash
+# https://docs.ansible.com/ansible/2.4/vault.html
+
+# Editing Encrypted Files
+ansible-vault edit ./ansible/environments/staging/group_vars/all/secret.overrides.yml
+
+# Viewing Encrypted Files
+ansible-vault view ./ansible/environments/staging/group_vars/all/secret.overrides.yml
 ```
