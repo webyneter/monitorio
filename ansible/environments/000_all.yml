@@ -1,7 +1,6 @@
 ---
 
 local_root_dir_path: ".."
-config_dir_name: "config"
 files_config_dir_path: "files/{{ config_dir_name }}"
 template_config_dir_path: "templates/{{ config_dir_name }}"
 

@@ -1,0 +1,70 @@
+image: registry.gitlab.com/new-age-tech/gitlab-ci-runner-docker/gitlab-ci-runner-docker:latest
+
+
+services:
+- docker:dind
+
+
+stages:
+- build
+- staging
+
+
+variables:
+  CONFIG_DIR_NAME: "config"
+  REGISTRY_FULL_PATH: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
+  IMAGE_TAG: "${CI_COMMIT_SHA}"
+
+  ANSIBLE_VAULT_PASSWORD_FILE_NAME: ".vault_password"
+
+
+before_script:
+- &global_before_script
+  # https://gitlab.com/gitlab-org/gitlab-ce/issues/24235
+    uname -a && whoami && docker --version && docker-compose --version
+
+
+build_and_push:
+  stage: build
+
+  only:
+  - master
+
+  before_script:
+  - *global_before_script
+  - docker login --username "${CI_DEPLOY_USER}" --password "${CI_DEPLOY_PASSWORD}" "${CI_REGISTRY}"
+
+  script:
+  - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml build
+  - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
+
+  after_script:
+  - docker logout "${CI_REGISTRY}"
+
+
+deploy_staging:
+  stage: staging
+
+  only:
+  - master
+
+  before_script:
+  - *global_before_script
+
+  # region https://gist.github.com/yannhowe/5ab1501156bd84c8ac261e2c17b8e3e0#gistcomment-2564991
+  - mkdir -p ~/.ssh
+  # Loading "${CI_RUNNER_SSH_PRIVATE_KEY}" for the runner's Ansible
+  # to be able to access the remote host.
+  # (https://docs.gitlab.com/ee/ci/ssh_keys/#how-it-works)
+  - echo "${CI_RUNNER_SSH_PRIVATE_KEY}" | tr -d '\r' > ~/.ssh/id_rsa
+  - chmod 700 ~/.ssh/id_rsa
+  - eval "$(ssh-agent -s)"
+  - ssh-add ~/.ssh/id_rsa
+  # https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys
+  - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+  # endregion
+
+  script:
+  - echo "${ANSIBLE_VAULT_PASSWORD}" > "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}"
+  - ansible-playbook --inventory ./ansible/environments/staging/ ./ansible/remote.yml --vault-password-file "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}" --extra-vars "commit_sha=${CI_COMMIT_SHA}
+  config_dir_name=${CONFIG_DIR_NAME} registry_url=${CI_REGISTRY} registry_username=${CI_DEPLOY_USER} registry_password=${CI_DEPLOY_PASSWORD} registry_full_path=${REGISTRY_FULL_PATH}"

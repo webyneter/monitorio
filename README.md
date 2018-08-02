@@ -43,3 +43,20 @@ ansible-vault edit ./ansible/environments/staging/group_vars/all/secret.override
 # Viewing Encrypted Files
 ansible-vault view ./ansible/environments/staging/group_vars/all/secret.overrides.yml
 ```
+
+### Generating SSH public-private key pair for CI
+
+```bash
+mkdir -p ./.ssh/
+
+# N.B. For seamless CI experience, no passphrase is being set.
+ssh-keygen \
+    -q \
+    -b 4096 \
+    -t rsa \
+    -N "" \
+    -C id_rsa \
+    -f ./.ssh/id_rsa
+
+ssh-copy-id -i ./.ssh/id_rsa -p <port> <user@host>
+```
