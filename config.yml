@@ -1,0 +1,16 @@
+version: '3.6'
+
+services:
+  grafana:
+    volumes:
+    - ./${CONFIG_DIR_NAME}/grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+    - ./${CONFIG_DIR_NAME}/grafana/.env
+
+  prometheus:
+    volumes:
+    - ./${CONFIG_DIR_NAME}/prometheus/:/etc/prometheus/
+
+  alertmanager:
+    volumes:
+    - ./${CONFIG_DIR_NAME}/alertmanager/:/etc/alertmanager/

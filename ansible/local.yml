@@ -11,6 +11,7 @@
       docker-compose
       --file "{{ local_root_dir_path }}/base.yml"
       --file "{{ local_root_dir_path }}/build.yml"
+      --file "{{ local_root_dir_path }}/config.yml"
       --file "{{ local_root_dir_path }}/local.yml"
       build
 
@@ -20,6 +21,7 @@
       docker-compose
       --file "{{ local_root_dir_path }}/base.yml"
       --file "{{ local_root_dir_path }}/build.yml"
+      --file "{{ local_root_dir_path }}/config.yml"
       --file "{{ local_root_dir_path }}/local.yml"
       up
       --detach

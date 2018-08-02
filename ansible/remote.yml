@@ -17,6 +17,7 @@
       dest: "{{ commit_sha_dir_path }}"
     loop:
     - "{{ local_root_dir_path }}/base.yml"
+    - "{{ local_root_dir_path }}/config.yml"
     - "{{ local_root_dir_path }}/production.yml"
 
   - name: "Pull {{ commit_sha }} images from {{ registry_url }}"
@@ -32,6 +33,7 @@
       command: >
         docker-compose
           --file "{{ commit_sha_dir_path }}/base.yml"
+          --file "{{ commit_sha_dir_path }}/config.yml"
           --file "{{ commit_sha_dir_path }}/production.yml"
           pull
     - name: "Logout of {{ registry_url }}"
@@ -43,6 +45,7 @@
       docker-compose
         --project-name "{{ project_name }}"
         --file "{{ commit_sha_dir_path }}/base.yml"
+        --file "{{ commit_sha_dir_path }}/config.yml"
         --file "{{ commit_sha_dir_path }}/production.yml"
         up
         --detach

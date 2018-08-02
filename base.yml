@@ -19,9 +19,6 @@ services:
     - prometheus
     volumes:
     - grafana_data:/var/lib/grafana
-    - ./${CONFIG_DIR_NAME}/grafana/provisioning/:/etc/grafana/provisioning/
-    env_file:
-    - ./${CONFIG_DIR_NAME}/grafana/.env
     ports:
     - 3000:3000
 
@@ -34,7 +31,6 @@ services:
     - backend
     volumes:
     - prometheus_data:/prometheus
-    - ./${CONFIG_DIR_NAME}/prometheus/:/etc/prometheus/
     ports:
     - 9090:9090
     command:
@@ -74,8 +70,6 @@ services:
     restart: always
     networks:
     - backend
-    volumes:
-    - ./${CONFIG_DIR_NAME}/alertmanager/:/etc/alertmanager/
     command:
     - '--config.file=/etc/alertmanager/config.yml'
     - '--storage.path=/alertmanager'
