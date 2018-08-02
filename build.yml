@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  grafana:
+    build: ./docker/grafana/
+
+  prometheus:
+    build: ./docker/prometheus/
+
+  cadvisor:
+    build: ./docker/cadvisor/
+
+  node-exporter:
+    build: ./docker/node-exporter/
+
+  alertmanager:
+    build: ./docker/alertmanager/
