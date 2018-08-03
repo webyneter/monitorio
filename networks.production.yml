@@ -1,12 +1,20 @@
 version: '3.6'
 
 networks:
-  frontend:
+  grafana-frontend:
+    external:
+      name: reversario_default
+  prometheus-frontend:
     external:
       name: reversario_default
 
 services:
   grafana:
     networks:
-      - frontend
+      - grafana-frontend
+      - backend
+
+  prometheus:
+    networks:
+      - prometheus-frontend
       - backend

@@ -5,7 +5,6 @@ volumes:
   prometheus_data: {}
 
 networks:
-  frontend:
   backend:
 
 services:
@@ -13,7 +12,6 @@ services:
     container_name: grafana
     restart: always
     networks:
-    - frontend
     - backend
     depends_on:
     - prometheus
