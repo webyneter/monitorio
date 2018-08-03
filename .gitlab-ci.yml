@@ -17,6 +17,9 @@ variables:
 
   ANSIBLE_VAULT_PASSWORD_FILE_NAME: ".vault_password"
 
+  STAGING_GRAFANA_DOMAIN: "grafana.resume-builder.constverum.com"
+  STAGING_PROMETHEUS_DOMAIN: "prometheus.resume-builder.constverum.com"
+
 
 before_script:
 - &global_before_script
@@ -66,4 +69,4 @@ deploy_staging:
 
   script:
   - echo "${ANSIBLE_VAULT_PASSWORD}" > "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}"
-  - ansible-playbook --inventory ./ansible/environments/staging/ ./ansible/remote.yml --vault-password-file "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}" --extra-vars "commit_sha=${CI_COMMIT_SHA} config_dir_name=${CONFIG_DIR_NAME} registry_url=${CI_REGISTRY} registry_username=${CI_DEPLOY_USER} registry_password=${CI_DEPLOY_PASSWORD} registry_full_path=${REGISTRY_FULL_PATH}"
+  - ansible-playbook --inventory ./ansible/environments/staging/ ./ansible/remote.yml --vault-password-file "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}" --extra-vars "letsencrypt_email=${LETSENCRYPT_EMAIL}  commit_sha=${CI_COMMIT_SHA} config_dir_name=${CONFIG_DIR_NAME} registry_url=${CI_REGISTRY} registry_username=${CI_DEPLOY_USER} registry_password=${CI_DEPLOY_PASSWORD} registry_full_path=${REGISTRY_FULL_PATH} grafana_domain=${STAGING_GRAFANA_DOMAIN} prometheus_domain=${STAGING_PROMETHEUS_DOMAIN}"

@@ -1,0 +1,12 @@
+version: '3.6'
+
+networks:
+  frontend:
+    external:
+      name: reversario_default
+
+services:
+  grafana:
+    networks:
+      - frontend
+      - backend

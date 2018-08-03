@@ -62,5 +62,5 @@ fabric.properties
 
 
 ### Project
-/.ssh/
+.ssh/
 /config/

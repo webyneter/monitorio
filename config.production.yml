@@ -1,0 +1,6 @@
+version: '3.6'
+
+services:
+  prometheus:
+    env_file:
+    - ./${CONFIG_DIR_NAME}/prometheus/.env
