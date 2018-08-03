@@ -4,17 +4,18 @@ networks:
   grafana-frontend:
     external:
       name: reversario_default
-  prometheus-frontend:
-    external:
-      name: reversario_default
+#  prometheus-frontend:
+#    external:
+#      name: reversario_default
 
 services:
   grafana:
     networks:
       - grafana-frontend
       - backend
-
-  prometheus:
-    networks:
-      - prometheus-frontend
-      - backend
+# region Prometheus doesn't natively support authentication (https://prometheus.io/docs/operating/security/#authentication-authorisation-encryption) -- unless this is dealt with, it mustn't be exposed in any way
+#  prometheus:
+#    networks:
+#      - prometheus-frontend
+#      - backend
+# endregion
