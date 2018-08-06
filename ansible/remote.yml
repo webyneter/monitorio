@@ -1,6 +1,6 @@
 ---
 
-- hosts: monitorio
+- hosts: all
 
   tasks:
   - name: "Create {{ commit_sha_dir_path }}/"

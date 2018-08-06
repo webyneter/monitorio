@@ -1,6 +1,6 @@
 ---
 
-- hosts: monitorio
+- hosts: all
 
   tasks:
   - import_tasks: tasks/common.yml
