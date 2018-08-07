@@ -1,6 +1,6 @@
 ---
 
-root_dir_path: "~/apps"
+root_dir_path: "~"
 project_dir_path: "{{ root_dir_path }}/{{ project_name }}"
 commit_sha_dir_path: "{{ project_dir_path }}/{{ commit_sha }}"
 config_dir_path: "{{ commit_sha_dir_path }}/{{ config_dir_name }}"
