@@ -3,7 +3,7 @@
 - hosts: all
 
   tasks:
-  - import_tasks: tasks/common.yml
+  - import_tasks: tasks/initialize_configuration.yml
 
   - name: Build images
     environment: "{{ docker_compose }}"

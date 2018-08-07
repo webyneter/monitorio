@@ -9,7 +9,7 @@
       recurse: yes
       state: directory
 
-  - import_tasks: tasks/common.yml
+  - import_tasks: tasks/initialize_configuration.yml
 
   - name: "Copy docker-compose files to {{ commit_sha_dir_path }}/"
     copy:
