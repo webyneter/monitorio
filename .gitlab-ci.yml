@@ -71,7 +71,7 @@ deploy_staging:
 
   script:
   - echo "${ANSIBLE_VAULT_PASSWORD}" > "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}"
-  - ansible-playbook --inventory ./ansible/environments/staging/ ./ansible/remote.yml --vault-password-file "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}" --extra-vars "letsencrypt_email=${LETSENCRYPT_EMAIL}  commit_sha=${CI_COMMIT_SHA} config_dir_name=${CONFIG_DIR_NAME} registry_url=${CI_REGISTRY} registry_username=${CI_DEPLOY_USER} registry_password=${CI_DEPLOY_PASSWORD} registry_full_path=${REGISTRY_FULL_PATH} grafana_domain=${GRAFANA_DOMAIN} prometheus_domain=${PROMETHEUS_DOMAIN}"
+  - ansible-playbook --inventory ./ansible/environments/staging/ ./ansible/remote.yml --vault-password-file "${ANSIBLE_VAULT_PASSWORD_FILE_NAME}" --extra-vars "root_dir_path=${APPS_ROOT_DIR_PATH} letsencrypt_email=${LETSENCRYPT_EMAIL}  commit_sha=${CI_COMMIT_SHA} config_dir_name=${CONFIG_DIR_NAME} registry_url=${CI_REGISTRY} registry_username=${CI_DEPLOY_USER} registry_password=${CI_DEPLOY_PASSWORD} registry_full_path=${REGISTRY_FULL_PATH} grafana_domain=${GRAFANA_DOMAIN} prometheus_domain=${PROMETHEUS_DOMAIN}"
 
 
 deploy_production:
