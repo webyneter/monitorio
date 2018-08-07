@@ -38,10 +38,10 @@ You should never do that.
 # https://docs.ansible.com/ansible/2.4/vault.html
 
 # Editing Encrypted Files
-ansible-vault edit ./ansible/environments/staging/group_vars/all/secret.overrides.yml
+ansible-vault edit ./ansible/environments/staging/group_vars/all/999_secret.overrides.yml
 
 # Viewing Encrypted Files
-ansible-vault view ./ansible/environments/staging/group_vars/all/secret.overrides.yml
+ansible-vault view ./ansible/environments/staging/group_vars/all/999_secret.overrides.yml
 ```
 
 ### Generating SSH public-private key pair for CI
