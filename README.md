@@ -1,6 +1,6 @@
 # monitorio
 
-A snapshot fork of https://github.com/vegasbrianc/prometheus with a few improvements
+Customizes https://github.com/vegasbrianc/prometheus
 
 
 ## Operating the Stack
