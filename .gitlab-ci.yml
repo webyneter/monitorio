@@ -24,12 +24,13 @@ build_and_push:
   only:
   - master
   variables:
-    REGISTRY_FULL_PATH: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
+    REGISTRY_FULL_PATH: "${CI_REGISTRY_IMAGE}"
     IMAGE_TAG: "${CI_COMMIT_SHA}"
   before_script:
   - print_info
   - docker login --username "${CI_DEPLOY_USER}" --password "${CI_DEPLOY_PASSWORD}" "${CI_REGISTRY}"
   script:
+  # TODO: fix caching
   - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml pull
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml build
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
