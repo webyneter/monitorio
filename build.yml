@@ -2,16 +2,31 @@ version: '3.6'
 
 services:
   grafana:
-    build: ./docker/grafana/
+    build:
+      context: ./docker/grafana/
+      cache_from:
+        - ${REGISTRY_FULL_PATH}/grafana:latest
 
   prometheus:
-    build: ./docker/prometheus/
+    build:
+      context: ./docker/prometheus/
+      cache_from:
+        - ${REGISTRY_FULL_PATH}/prometheus:latest
 
   cadvisor:
-    build: ./docker/cadvisor/
+    build:
+      context: ./docker/cadvisor/
+      cache_from:
+        - ${REGISTRY_FULL_PATH}/cadvisor:latest
 
   node-exporter:
-    build: ./docker/node-exporter/
+    build:
+      context: ./docker/node-exporter/
+      cache_from:
+        - ${REGISTRY_FULL_PATH}/node-exporter:latest
 
   alertmanager:
-    build: ./docker/alertmanager/
+    build:
+      context: ./docker/alertmanager/
+      cache_from:
+        - ${REGISTRY_FULL_PATH}/alertmanager:latest
