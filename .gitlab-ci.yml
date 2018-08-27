@@ -32,8 +32,9 @@ build_and_push:
   script:
 #  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml pull
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml build
-  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
+  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml build
+  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
   after_script:
   - docker logout "${CI_REGISTRY}"
 
