@@ -1,44 +1,39 @@
 image: registry.gitlab.com/new-age-tech/gitlab-ci-runner-docker/gitlab-ci-runner-docker:latest
 
-
 services:
 - docker:dind
-
 
 stages:
 - build
 - staging
 - production
 
-
 variables:
   CONFIG_DIR_NAME: "config"
   REGISTRY_FULL_PATH: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
   IMAGE_TAG: "${CI_COMMIT_SHA}"
-
   ANSIBLE_VAULT_PASSWORD_FILE_NAME: ".vault_password"
-
 
 before_script:
 - &global_before_script
   # https://gitlab.com/gitlab-org/gitlab-ce/issues/24235
     uname -a && whoami && docker --version && docker-compose --version
 
-
 build_and_push:
   stage: build
-
   only:
   - master
-
+  variables:
+    REGISTRY_FULL_PATH: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
+    IMAGE_TAG: "${CI_COMMIT_SHA}"
   before_script:
-  - *global_before_script
+  - print_info
   - docker login --username "${CI_DEPLOY_USER}" --password "${CI_DEPLOY_PASSWORD}" "${CI_REGISTRY}"
-
   script:
+#  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml pull
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml build
+  - IMAGE_TAG=latest docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
   - docker-compose --file ./base.yml --file ./build.yml --file ./production.yml push
-
   after_script:
   - docker logout "${CI_REGISTRY}"
 
