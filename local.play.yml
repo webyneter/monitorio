@@ -1,0 +1,45 @@
+---
+
+- hosts: local
+
+  pre_tasks:
+  - name: Include vars
+    block:
+    - name: Include ./vars/main.yml
+      include_vars:
+        file: main.yml
+    - name: Include ./vars/local.yml
+      include_vars:
+        file: local.yml
+
+  - debug:
+      msg: "{{ config_dir_path }}"
+  - debug:
+      msg: "{{ docker_compose }}"
+  - debug:
+      msg: "{{ grafana_security_admin_user }}"
+
+  tasks:
+  - import_tasks: ./tasks/initialize_configuration.yml
+
+  - name: Build images
+    environment: "{{ docker_compose }}"
+    command: >
+      docker-compose
+      --file ./base.yml
+      --file ./build.yml
+      --file ./config.yml
+      --file ./local.yml
+      build
+
+  - name: Re/start stack
+    environment: "{{ docker_compose }}"
+    command: >
+      docker-compose
+      --file ./base.yml
+      --file ./build.yml
+      --file ./config.yml
+      --file ./local.yml
+      up
+      --detach
+      --force-recreate

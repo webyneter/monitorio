@@ -1,5 +1,10 @@
 ---
 
+config_dir_name: "config"
+files_config_dir_path: "files/{{ config_dir_name }}"
+template_config_dir_path: "templates/{{ config_dir_name }}"
+
+project_name: "monitorio"
 project_dir_path: "{{ root_dir_path }}/{{ project_name }}"
 commit_sha_dir_path: "{{ project_dir_path }}/{{ commit_sha }}"
 config_dir_path: "{{ commit_sha_dir_path }}/{{ config_dir_name }}"
@@ -12,7 +17,12 @@ docker_compose:
 grafana_virtual_host: "{{ grafana_domain }}"
 grafana_virtual_port: "3000"
 grafana_letsencrypt_email: "{{ letsencrypt_email }}"
+grafana_users_default_theme: "light"
+grafana_auth_anonymous_org_name: "Anonymous Corp."
 
 prometheus_virtual_host: "{{ prometheus_domain }}"
 prometheus_virtual_port: "9090"
 prometheus_letsencrypt_email: "{{ letsencrypt_email }}"
+prometheus_scrape_interval: "10s"
+prometheus_scrape_timeout: "10s"
+prometheus_evaluation_interval: "10s"

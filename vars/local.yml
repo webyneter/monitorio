@@ -1,11 +1,16 @@
 ---
 
 config_dir_name: "config"
-config_dir_path: "{{ local_root_dir_path }}/{{ config_dir_name }}"
+config_dir_path: "./{{ config_dir_name }}"
 
 docker_compose:
   CONFIG_DIR_NAME: "{{ config_dir_name }}"
 
+letsencrypt_email: "debug@debug.org"
+
+grafana_domain: ""
 grafana_security_admin_user: "debug"
 grafana_security_admin_password: "debug"
 grafana_security_secret_key: "I2fa3Jlfig3ToxP0xKwVrGGbO5x1aX7NicihbaNAbJqrj4OLE60p2qrZDHfShIda"
+
+prometheus_domain: ""
