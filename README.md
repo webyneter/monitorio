@@ -12,5 +12,5 @@ Customizes https://github.com/vegasbrianc/prometheus
 ### Locally
 
 ```bash
-ansible-playbook --verbose --inventory ./hosts.yml ./local.play.yml
+ansible-playbook --verbose ./local.play.yml
 ```
