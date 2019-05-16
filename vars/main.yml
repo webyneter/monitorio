@@ -11,8 +11,6 @@ config_dir_path: "{{ commit_sha_dir_path }}/{{ config_dir_name }}"
 
 docker_compose:
   CONFIG_DIR_NAME: "{{ config_dir_name }}"
-  REGISTRY_FULL_PATH: "{{ registry_full_path }}"
-  IMAGE_TAG: "{{ commit_sha }}"
 
 grafana_virtual_host: "{{ grafana_domain }}"
 grafana_virtual_port: "3000"

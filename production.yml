@@ -2,16 +2,11 @@ version: '3.6'
 
 services:
   grafana:
-    image: ${REGISTRY_FULL_PATH}/grafana:${IMAGE_TAG}
 
   prometheus:
-    image: ${REGISTRY_FULL_PATH}/prometheus:${IMAGE_TAG}
 
   cadvisor:
-    image: ${REGISTRY_FULL_PATH}/cadvisor:${IMAGE_TAG}
 
   node-exporter:
-    image: ${REGISTRY_FULL_PATH}/node-exporter:${IMAGE_TAG}
 
   alertmanager:
-    image: ${REGISTRY_FULL_PATH}/alertmanager:${IMAGE_TAG}
