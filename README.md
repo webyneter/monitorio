@@ -1,16 +1,12 @@
 # monitorio
 
-Customizes https://github.com/vegasbrianc/prometheus
+Ansible role deploying a customized version of [vegasbrianc/prometheus](https://github.com/vegasbrianc/prometheus)'s prometheus stack.
 
+## Remote host prerequisites
 
-## Operating the Stack
+* Docker (tested with 18.06)
+* Docker Compose (tested with 1.22)
 
-### Prerequisites
+## Required role parameters
 
-* [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-
-### Locally
-
-```bash
-ansible-playbook --verbose ./local.play.yml
-```
+* `root_dir_path`: path to the root directory for reversario files to reside in on a remote host e.g. `~/apps/`
